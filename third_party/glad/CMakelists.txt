@@ -1,0 +1,15 @@
+cmake_minimum_required(VERSION 3.5...4.0)
+project(glad C)
+
+add_library(glad STATIC)
+
+target_sources(glad
+    PUBLIC
+        FILE_SET HEADERS
+        BASE_DIRS ./include
+        FILES
+            include/glad/gl.h
+            include/KHR/khrplatform.h
+    PRIVATE
+        src/gl.c
+)
