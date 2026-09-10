@@ -1,0 +1,29 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 22,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "vs2026-debug",
+      "displayName": "Visual Studio 2026 Debug",
+      "description": "Generador para Visual Studio 2026 (Windows)",
+      "generator": "Visual Studio 18 2026",
+      "binaryDir": "${sourceDir}/build/vs2026-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "vs2026-release",
+      "inherits": "vs2026-debug",
+      "displayName": "Visual Studio 2026 Release",
+      "binaryDir": "${sourceDir}/build/vs2026-release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    }
+  ]
+}
