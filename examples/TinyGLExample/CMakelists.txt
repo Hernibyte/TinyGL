@@ -1,0 +1,11 @@
+add_executable(TinyGLExample)
+
+target_sources(TinyGLExample
+    PRIVATE
+        main.cpp
+)
+
+target_link_libraries(TinyGLExample
+    PRIVATE
+        TinyGL
+)
