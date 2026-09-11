@@ -1,8 +1,10 @@
 ﻿#pragma once
 
-#include "platform/default_types.h"
+#include <memory>
 
+#include "platform/default_types.h"
 #include "events/event.h"
+#include "core/renderer.h"
 #include "events/app_event.h"
 #include "events/key_event.h"
 #include "events/mouse_event.h"
@@ -26,10 +28,12 @@ namespace TGL::CORE
         explicit window(window_info& info);
         ~window();
         
-        void set_on_event_callback(event::callback_fn callback) { m_window_data.on_event = callback; }
+        void set_on_event_callback(event::callback_fn callback) { m_window_props.on_event = callback; }
         
         void close();
         bool should_close();
+
+        inline std::shared_ptr<renderer>& get_renderer() { return m_window_props.renderer; }
 
         void swap_buffers();
         void poll_events();
@@ -38,15 +42,18 @@ namespace TGL::CORE
         bool get_mouse_button_pressed(i32 button);
 
     private:
-        struct window_data
+        struct window_props
         {
             GLFWwindow* window = nullptr;
             i32 width;
             i32 height;
+            i32 framebuffer_width;
+            i32 framebuffer_height;
             const char* title;
             event::callback_fn on_event;
+            std::shared_ptr<renderer> renderer;
         };
-        window_data m_window_data;
+        window_props m_window_props;
 
         void init();
     };
