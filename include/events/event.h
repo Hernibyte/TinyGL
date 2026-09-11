@@ -16,6 +16,7 @@ namespace TGL
         window_focus,
         window_lost_focus,
         window_moved,
+        window_framebuffer_resize,
         app_tick,
         app_update,
         app_render,
