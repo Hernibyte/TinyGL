@@ -12,27 +12,27 @@ namespace TGL::CORE
     
     window::window(int width, int height, const char* title)
     {
-        m_window_data.title = title;
-        m_window_data.height = height;
-        m_window_data.width = width;
+        m_window_props.title = title;
+        m_window_props.height = height;
+        m_window_props.width = width;
 
         init();
     }
 
     window::window(window_info& info)
     {
-        m_window_data.width = info.width;
-        m_window_data.height = info.height;
-        m_window_data.title = info.title;
+        m_window_props.width = info.width;
+        m_window_props.height = info.height;
+        m_window_props.title = info.title;
 
         init();
     }
     
     window::~window()
     {
-        if (m_window_data.window)
+        if (m_window_props.window)
         {
-            glfwDestroyWindow(m_window_data.window);
+            glfwDestroyWindow(m_window_props.window);
             glfwTerminate();
         }
     }
@@ -50,106 +50,149 @@ namespace TGL::CORE
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-        
-        m_window_data.window = glfwCreateWindow(m_window_data.width, m_window_data.height, m_window_data.title, NULL, NULL);
-        if (!m_window_data.window)
+
+#ifdef __APPLE__
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
+
+        // create window
+        m_window_props.window = glfwCreateWindow(m_window_props.width, m_window_props.height, m_window_props.title, NULL, NULL);
+        if (!m_window_props.window)
         {
             TGL_CORE_ERROR("Failed to create GLFW window");
             glfwTerminate();
         }
         
-        glfwMakeContextCurrent(m_window_data.window);
-        glfwSetWindowUserPointer(m_window_data.window, &m_window_data);
+        glfwMakeContextCurrent(m_window_props.window);
+        glfwSetWindowUserPointer(m_window_props.window, &m_window_props);
+
+        // create renderer
+        m_window_props.renderer = std::make_shared<renderer>();
 
         // glfw callbacks
-        glfwSetWindowSizeCallback(m_window_data.window, [](GLFWwindow* window, i32 width, i32 height)
+        glfwSetWindowSizeCallback(m_window_props.window, [](GLFWwindow* window, i32 width, i32 height)
         {
-            window_data& data = *(window_data*)glfwGetWindowUserPointer(window);
-            data.width = width;
-            data.height = height;
+            window_props& props = *(window_props*)glfwGetWindowUserPointer(window);
+            props.width = width;
+            props.height = height;
 
             window_resize_event event(width, height);
-            data.on_event(event);
+            props.on_event(event);
         });
 
-        glfwSetKeyCallback(m_window_data.window, [](GLFWwindow* window, i32 key, i32 scancode, i32 action, i32 mods)
+        glfwSetFramebufferSizeCallback(m_window_props.window, [](GLFWwindow* window, i32 width, i32 height)
         {
-            window_data& data = *(window_data*)glfwGetWindowUserPointer(window);
+            window_props& props = *(window_props*)glfwGetWindowUserPointer(window);
+            props.framebuffer_width = width;
+            props.framebuffer_height = height;
+
+            window_framebuffer_resize_event event(width, height);
+            props.on_event(event);
+        });
+
+        glfwSetWindowCloseCallback(m_window_props.window, [](GLFWwindow* window)
+        {
+            window_props& props = *(window_props*)glfwGetWindowUserPointer(window);
+
+            window_close_event event;
+            props.on_event(event);
+        });
+
+        glfwSetWindowFocusCallback(m_window_props.window, [](GLFWwindow* window, i32 focused)
+        {
+            window_props& props = *(window_props*)glfwGetWindowUserPointer(window);
+
+            if (focused)
+            {
+                TGL_CORE_INFO("Window gained focus");
+            }
+            else
+            {
+                TGL_CORE_INFO("Window lost focus");
+            }
+
+            window_focus_event event(focused);
+            props.on_event(event);
+        });
+
+        glfwSetKeyCallback(m_window_props.window, [](GLFWwindow* window, i32 key, i32 scancode, i32 action, i32 mods)
+        {
+            window_props& props = *(window_props*)glfwGetWindowUserPointer(window);
 
             switch (action)
             {
                 case GLFW_PRESS:
                 {
                     key_pressed_event event(key, 0);
-                    data.on_event(event);
+                    props.on_event(event);
                     break;
                 }
                 case GLFW_RELEASE:
                 {
                     key_released_event event(key);
-                    data.on_event(event);
+                    props.on_event(event);
                     break;
                 }
                 case GLFW_REPEAT:
                 {
                     key_pressed_event event(key, 1);
-                    data.on_event(event);
+                    props.on_event(event);
                     break;
                 }
             }
         });
 
-        glfwSetMouseButtonCallback(m_window_data.window, [](GLFWwindow* window, i32 button, i32 action, i32 mods)
+        glfwSetMouseButtonCallback(m_window_props.window, [](GLFWwindow* window, i32 button, i32 action, i32 mods)
         {
-            window_data& data = *(window_data*)glfwGetWindowUserPointer(window);
+            window_props& props = *(window_props*)glfwGetWindowUserPointer(window);
 
             switch (action)
             {
                 case GLFW_PRESS:
                 {
                     mouse_button_pressed_event event(button);
-                    data.on_event(event);
+                    props.on_event(event);
                     break;
                 }
                 case GLFW_RELEASE:
                 {
                     mouse_button_released_event event(button);
-                    data.on_event(event);
+                    props.on_event(event);
                     break;
                 }
             }
         });
 
-        glfwSetScrollCallback(m_window_data.window, [](GLFWwindow* window, f64 xoffset, f64 yoffset)
+        glfwSetScrollCallback(m_window_props.window, [](GLFWwindow* window, f64 xoffset, f64 yoffset)
         {
-            window_data& data = *(window_data*)glfwGetWindowUserPointer(window);
+            window_props& props = *(window_props*)glfwGetWindowUserPointer(window);
 
             mouse_scrolled_event event((f32)xoffset, (f32)yoffset);
-            data.on_event(event);
+            props.on_event(event);
         });
 
-        glfwSetCursorPosCallback(m_window_data.window, [](GLFWwindow* window, f64 xpos, f64 ypos)
+        glfwSetCursorPosCallback(m_window_props.window, [](GLFWwindow* window, f64 xpos, f64 ypos)
         {
-            window_data& data = *(window_data*)glfwGetWindowUserPointer(window);
+            window_props& props = *(window_props*)glfwGetWindowUserPointer(window);
 
             mouse_moved_event event((f32)xpos, (f32)ypos);
-            data.on_event(event);
+            props.on_event(event);
         });
     }
 
     void window::close()
     {
-        glfwSetWindowShouldClose(m_window_data.window, true);
+        glfwSetWindowShouldClose(m_window_props.window, true);
     }
 
     bool window::should_close()
     {
-        return glfwWindowShouldClose(m_window_data.window);
+        return glfwWindowShouldClose(m_window_props.window);
     }
 
     void window::swap_buffers()
     {
-        glfwSwapBuffers(m_window_data.window);
+        glfwSwapBuffers(m_window_props.window);
     }
 
     void window::poll_events()
@@ -159,11 +202,11 @@ namespace TGL::CORE
 
     bool window::get_key_pressed(i32 keycode)
     {
-        return glfwGetKey(m_window_data.window, keycode) == GLFW_PRESS;
+        return glfwGetKey(m_window_props.window, keycode) == GLFW_PRESS;
     }
 
     bool window::get_mouse_button_pressed(i32 button)
     {
-        return glfwGetMouseButton(m_window_data.window, button) == GLFW_PRESS;
+        return glfwGetMouseButton(m_window_props.window, button) == GLFW_PRESS;
     }
 }
