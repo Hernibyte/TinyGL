@@ -83,6 +83,10 @@ target_sources(TinyGL
             include/core/window.h
             include/platform/default_types.h
             include/platform/log.h
+            include/events/event.h
+            include/events/app_event.h
+            include/events/key_event.h
+            include/events/mouse_event.h
     PRIVATE
         src/core/window.cpp
         src/platform/log.cpp
