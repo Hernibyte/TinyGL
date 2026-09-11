@@ -66,11 +66,34 @@ namespace TGL
     class window_focus_event : public event
     {
     public:
-        window_focus_event() {}
+        window_focus_event(bool focused) : m_focused(focused) {}
+
+        inline bool is_focused() const { return m_focused; }
 
         EVENT_CLASS_TYPE(window_focus)
         EVENT_CLASS_CATEGORY(event_category::application)
+    private:
+        bool m_focused;
     };
 
+    class window_framebuffer_resize_event : public event
+    {
+    public:
+        window_framebuffer_resize_event(i32 width, i32 height)
+            : m_width(width), m_height(height) {}
 
+        inline i32 get_width() const { return m_width; }
+        inline i32 get_height() const { return m_height; }
+
+        std::string to_string() const override
+        {
+            return std::string(get_name()) + ": " + std::to_string(m_width) + ", " + std::to_string(m_height);
+        }
+
+        EVENT_CLASS_TYPE(window_framebuffer_resize)
+        EVENT_CLASS_CATEGORY(event_category::application)
+    private:
+        i32 m_width;
+        i32 m_height;
+    };
 }
