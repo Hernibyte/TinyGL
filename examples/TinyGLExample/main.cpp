@@ -32,6 +32,11 @@ void on_event(TGL::event& e)
         TGL::mouse_button_released_event& button_event = dynamic_cast<TGL::mouse_button_released_event&>(e);
         TGL_INFO("Mouse button released: {0}", button_event.get_mouse_button());
     }
+    else if (e.get_event_type() == TGL::event_type::window_framebuffer_resize)
+    {
+        TGL::window_framebuffer_resize_event& framebuffer_event = dynamic_cast<TGL::window_framebuffer_resize_event&>(e);
+        TGL_INFO("Window framebuffer resized to: x={0}, y={1}", framebuffer_event.get_width(), framebuffer_event.get_height());
+    }
 }
 
 int main()
