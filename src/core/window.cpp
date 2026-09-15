@@ -200,13 +200,32 @@ namespace TGL::CORE
         glfwPollEvents();
     }
 
-    bool window::get_key_pressed(i32 keycode)
+    bool window::get_key_pressed(i32 keycode) const
     {
-        return glfwGetKey(m_window_props.window, keycode) == GLFW_PRESS;
+        i32 state = glfwGetKey(m_window_props.window, keycode);
+        return state == GLFW_PRESS || state == GLFW_REPEAT;
     }
 
-    bool window::get_mouse_button_pressed(i32 button)
+    bool window::get_key_released(i32 keycode) const
     {
-        return glfwGetMouseButton(m_window_props.window, button) == GLFW_PRESS;
+        return glfwGetKey(m_window_props.window, keycode) == GLFW_RELEASE;
+    }
+
+    bool window::get_mouse_button_pressed(i32 button) const
+    {
+        i32 state = glfwGetMouseButton(m_window_props.window, button);
+        return state == GLFW_PRESS || state == GLFW_REPEAT;
+    }
+
+    bool window::get_mouse_button_released(i32 button) const
+    {
+        return glfwGetMouseButton(m_window_props.window, button) == GLFW_RELEASE;
+    }
+
+    std::pair<f64, f64> window::get_mouse_position() const
+    {
+        f64 xpos, ypos;
+        glfwGetCursorPos(m_window_props.window, &xpos, &ypos);
+        return std::make_pair((f64)xpos, (f64)ypos);
     }
 }

@@ -38,8 +38,13 @@ namespace TGL::CORE
         void swap_buffers();
         void poll_events();
 
-        bool get_key_pressed(i32 keycode);
-        bool get_mouse_button_pressed(i32 button);
+        bool get_key_pressed(i32 keycode) const;
+        bool get_key_released(i32 keycode) const;
+        bool get_mouse_button_pressed(i32 button) const;
+        bool get_mouse_button_released(i32 button) const;
+        std::pair<f64, f64> get_mouse_position() const;
+        f64 get_mouse_x() const { return get_mouse_position().first; }
+        f64 get_mouse_y() const { return get_mouse_position().second; }
 
     private:
         struct window_props
