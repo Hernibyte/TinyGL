@@ -2,6 +2,8 @@
 
 ## A tiny graphics library for learning, fun and my portfolio if its posible.
 
+TinyGL is a tiny graphics library written in C++ using OpenGL. The idea is to provide a simple and easy-to-use API for rendering 2D and 3D graphics.
+
 ### Getting Started
 To get started with TinyGL, clone the repository and build the project using CMake.
 
