@@ -1,11 +1,11 @@
-# TinyGL
+# TeenyGL
 
-## A tiny graphics library for learning, fun and my portfolio if its posible.
+## A teeny graphics library for learning, fun and my portfolio if its posible.
 
-TinyGL is a tiny graphics library written in C++ using OpenGL. The idea is to provide a simple and easy-to-use API for rendering 2D and 3D graphics.
+TinyGL is a teeny graphics library written in C++ using OpenGL. The idea is to provide a simple and easy-to-use API for rendering 2D and 3D graphics.
 
 ### Getting Started
-To get started with TinyGL, clone the repository and build the project using CMake.
+To get started with TeenyGL, clone the repository and build the project using CMake.
 
 ```cmd
 git clone https://github.com/Hernibyte/TinyGL.git
@@ -19,7 +19,7 @@ In the near future I want check support for fetch_content and other CMake featur
 
 For now it's only support windows with msvc compiler but I hope to add support for other platforms with clang compiler and Ninja in the future.
 
-I hope you find TinyGL useful and enjoy learning graphics programming.
+I hope you find TeenyGL useful and enjoy learning graphics programming.
 All feedback are welcome!
 
 ### Dependencies
