@@ -244,10 +244,13 @@ namespace TGL::CORE
         GFX::vertex_buffer::vertex_buffer_info vertex_buffer_info = { vertices, sizeof(vertices) };
         GFX::index_buffer::index_buffer_info index_buffer_info = { indices, sizeof(indices) };
         
-        GFX::render_object render_object(vertex_buffer_info, index_buffer_info);
+        GFX::vertex_attributes_layout vertex_attributes_layout = {
+            { GFX::shader_data_type::float_3, "a_Position" }
+        };
         
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-        glEnableVertexAttribArray(0);
+        GFX::render_object render_object(vertex_buffer_info, index_buffer_info);
+        vertex_attributes_layout.set_attribute_layout();
+        render_object.unbind();
         
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);

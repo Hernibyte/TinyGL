@@ -3,7 +3,6 @@
 #include <string>
 #include <vector>
 
-#include "glad/gl.h"
 #include "platform/assert.h"
 #include "platform/default_types.h"
 
@@ -15,27 +14,8 @@ namespace TGL::GFX
         none = 0, float_1, float_2, float_3, float_4, mat_3, mat_4, int_1, int_2, int_3, int_4, bool_1
     };
     
-    static u32 shader_data_type_size(shader_data_type type)
-    {
-        switch (type)
-        {
-            case shader_data_type::none:    return 0;
-            case shader_data_type::float_1: return 4;
-            case shader_data_type::float_2: return 4 * 2;
-            case shader_data_type::float_3: return 4 * 3;
-            case shader_data_type::float_4: return 4 * 4;
-            case shader_data_type::mat_3:   return 4 * 3 * 3;
-            case shader_data_type::mat_4:   return 4 * 4 * 4;
-            case shader_data_type::int_1:   return 4;
-            case shader_data_type::int_2:   return 4 * 2;
-            case shader_data_type::int_3:   return 4 * 3;
-            case shader_data_type::int_4:   return 4 * 4;
-            case shader_data_type::bool_1:  return 1;
-        }
-        
-        TGL_CORE_ASSERT(false, "Unknown shader data type");
-        return 0;
-    }
+    static u32 shader_data_type_size(const shader_data_type type);
+    static u32 shader_data_type_to_glsl_type(const shader_data_type type);
     
     struct vertex_attributes
     {
@@ -45,10 +25,9 @@ namespace TGL::GFX
         u32 m_size;
         u32 m_offset;
         
-        vertex_attributes(const shader_data_type type, const std::string& name, const bool normalized = false)
-            : m_name(name), m_type(type), m_normalized(normalized), m_size(shader_data_type_size(type)), m_offset(0) {}
+        vertex_attributes(const shader_data_type type, const std::string& name, const bool normalized = false);
         
-        u32 get_attribute_count() const
+        i32 get_attribute_count() const
         {
             switch (m_type)
             {
@@ -79,6 +58,8 @@ namespace TGL::GFX
             calculate_offset_and_stride();
         }
         
+        void set_attribute_layout() const;
+        
     private:
         void calculate_offset_and_stride()
         {
@@ -93,7 +74,7 @@ namespace TGL::GFX
         }
         
         std::vector<vertex_attributes> m_attributes;
-        u32 m_stride = 0;
+        i32 m_stride = 0;
     };
     
     /////////////////////////////////////////////////////////////////
