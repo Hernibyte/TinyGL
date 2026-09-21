@@ -79,17 +79,41 @@ target_sources(TinyGL
         FILE_SET HEADERS
         BASE_DIRS ./include
         FILES
-            include/TinyGL.h
+            include/core/core.h
             include/core/window.h
-            include/platform/default_types.h
-            include/platform/log.h
             include/events/event.h
             include/events/app_event.h
             include/events/key_event.h
             include/events/mouse_event.h
+            include/input_code/mouse.h
+            include/input_code/keyboard.h
+            include/platform/gl/gl_buffers.h
+            include/platform/gl/gl_context.h
+            include/platform/gl/gl_shader.h
+            include/platform/gl/gl_vertex_array.h
+            include/platform/assert.h
+            include/platform/default_types.h
+            include/platform/log.h
+            include/renderer/buffers.h
+            include/renderer/context.h
+            include/renderer/render_object.h
+            include/renderer/renderer.h
+            include/renderer/shader.h
+            include/renderer/vertex_array.h
+            include/TinyGL.h
     PRIVATE
         src/core/window.cpp
+        src/platform/gl/gl_buffers.cpp
+        src/platform/gl/gl_context.cpp
+        src/platform/gl/gl_shader.cpp
+        src/platform/gl/gl_vertex_array.cpp
         src/platform/log.cpp
+        src/renderer/buffers.cpp
+        src/renderer/context.cpp
+        src/renderer/render_object.cpp
+        src/renderer/renderer.cpp
+        src/renderer/shader.cpp
+        src/renderer/vertex_array.cpp
 )
 
 target_link_libraries(TinyGL

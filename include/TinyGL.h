@@ -1,14 +1,8 @@
 #pragma once
 
-//#ifdef _WIN32
-//    #ifdef TINYGL_BUILD_SHARED
-//        #define TGL_API __declspec(dllexport)
-//    #else
-//        #define TGL_API __declspec(dllimport)
-//    #endif
-//#else
-//    #error "Unsupported platform!"
-//#endif
-
+#include "platform/assert.h"
 #include "platform/log.h"
+#include "platform/default_types.h"
+#include "input_code/keyboard.h"
+#include "input_code/mouse.h"
 #include "core/window.h"

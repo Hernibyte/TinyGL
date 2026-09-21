@@ -35,7 +35,9 @@ using u64l = uint_least64_t;
 using f32 = float;
 using f64 = double;
 
-// char = char
-// bool = bool
+using shader_id = u32;
+using buffer_id = u32;
+
+using cstr_ptr = const char*;
 
 #define BIT(x) (1 << x)

@@ -4,7 +4,7 @@
 
 #include "platform/default_types.h"
 #include "events/event.h"
-#include "core/renderer.h"
+#include "renderer/renderer.h"
 #include "events/app_event.h"
 #include "events/key_event.h"
 #include "events/mouse_event.h"
@@ -33,10 +33,12 @@ namespace TGL::CORE
         void close();
         bool should_close();
 
-        inline std::shared_ptr<renderer>& get_renderer() { return m_window_props.renderer; }
+        inline std::shared_ptr<GFX::renderer>& get_renderer() { return m_window_props.renderer; }
 
-        void swap_buffers();
-        void poll_events();
+        void swap_buffers() const;
+        void poll_events() const;
+        
+        void render_something();
 
         bool get_key_pressed(i32 keycode) const;
         bool get_key_released(i32 keycode) const;
@@ -56,7 +58,7 @@ namespace TGL::CORE
             i32 framebuffer_height;
             const char* title;
             event::callback_fn on_event;
-            std::shared_ptr<renderer> renderer;
+            std::shared_ptr<GFX::renderer> renderer = nullptr;
         };
         window_props m_window_props;
 

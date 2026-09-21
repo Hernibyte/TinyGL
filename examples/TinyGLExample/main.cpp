@@ -52,6 +52,7 @@ int main()
     while (!window.should_close())
     {
         // Render your scene here
+        window.render_something();
         
         window.swap_buffers();
         window.poll_events();

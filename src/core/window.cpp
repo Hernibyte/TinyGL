@@ -1,11 +1,13 @@
 ﻿#include "core/window.h"
 
-#include <iostream>
 #include <stdlib.h>
 
 #include <glad/gl.h>
 #include "GLFW/glfw3.h"
+
+#include "renderer/render_object.h"
 #include "platform/log.h"
+#include "platform/assert.h"
 
 namespace TGL::CORE
 {
@@ -43,9 +45,9 @@ namespace TGL::CORE
 
         if (!glfwInit())
         {
-            TGL_CORE_ERROR("Failed to initialize GLFW");
-            exit(EXIT_FAILURE);
+            TGL_CORE_ASSERT_LOG(false, "Failed to initialize GLFW!");
         }
+        TGL_CORE_INFO("GLFW initialized successfully!");
         
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
@@ -59,16 +61,17 @@ namespace TGL::CORE
         m_window_props.window = glfwCreateWindow(m_window_props.width, m_window_props.height, m_window_props.title, NULL, NULL);
         if (!m_window_props.window)
         {
-            TGL_CORE_ERROR("Failed to create GLFW window");
+            TGL_CORE_ASSERT_LOG(false, "Failed to create GLFW window!");
             glfwTerminate();
         }
+        TGL_CORE_INFO("GLFW window created successfully!");
         
         glfwMakeContextCurrent(m_window_props.window);
         glfwSetWindowUserPointer(m_window_props.window, &m_window_props);
 
         // create renderer
-        m_window_props.renderer = std::make_shared<renderer>();
-
+        m_window_props.renderer = std::make_shared<GFX::renderer>(glfwGetProcAddress);
+        
         // glfw callbacks
         glfwSetWindowSizeCallback(m_window_props.window, [](GLFWwindow* window, i32 width, i32 height)
         {
@@ -190,14 +193,68 @@ namespace TGL::CORE
         return glfwWindowShouldClose(m_window_props.window);
     }
 
-    void window::swap_buffers()
+    void window::swap_buffers() const
     {
         glfwSwapBuffers(m_window_props.window);
     }
 
-    void window::poll_events()
+    void window::poll_events() const
     {
         glfwPollEvents();
+    }
+
+    void window::render_something()
+    {
+        std::string vertex_shader_source = R"(
+            #version 330 core
+
+            layout (location = 0) in vec3 a_Position;
+            
+            void main()
+            {
+                gl_Position = vec4(a_Position, 1.0);
+            }
+        )";
+        
+        std::string fragment_shader_source = R"(
+            #version 330 core
+
+            out vec4 out_Color;
+            
+            void main()
+            {
+                out_Color = vec4(0.8, 0.2, 0.3, 1.0);
+            }
+        )";
+        
+        GFX::shader_program m_shader_program{vertex_shader_source.c_str(), fragment_shader_source.c_str()};
+        
+        float vertices[4 * 3] = {
+            0.5f, 0.5f, 0.0f,
+            0.5f, -0.5f, 0.0f,
+            -0.5f,  -0.5f, 0.0f,
+            -0.5f, 0.5f, 0.0f
+        };
+        
+        u32 indices[3 * 2] = {
+            0, 1, 3,
+            1, 2, 3
+        };
+        
+        GFX::vertex_buffer::vertex_buffer_info vertex_buffer_info = { vertices, sizeof(vertices) };
+        GFX::index_buffer::index_buffer_info index_buffer_info = { indices, sizeof(indices) };
+        
+        GFX::render_object render_object(vertex_buffer_info, index_buffer_info);
+        
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+        glEnableVertexAttribArray(0);
+        
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        
+        glUseProgram(m_shader_program.get_shader_program_id());
+        glBindVertexArray(render_object.get_buffer_id());
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     }
 
     bool window::get_key_pressed(i32 keycode) const
