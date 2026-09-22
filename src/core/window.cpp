@@ -248,16 +248,12 @@ namespace TGL::CORE
             { GFX::shader_data_type::float_3, "a_Position" }
         };
         
-        GFX::render_object render_object(vertex_buffer_info, index_buffer_info);
-        vertex_attributes_layout.set_attribute_layout();
-        render_object.unbind();
+        GFX::render_object m_render_object(vertex_buffer_info, vertex_attributes_layout, index_buffer_info);
         
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        m_window_props.renderer->clear_color(0.2f, 0.3f, 0.3f, 1.0f);
+        m_window_props.renderer->clear(GL_COLOR_BUFFER_BIT);
         
-        glUseProgram(m_shader_program.get_shader_program_id());
-        glBindVertexArray(render_object.get_buffer_id());
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        m_window_props.renderer->draw(m_render_object, m_shader_program);
     }
 
     bool window::get_key_pressed(i32 keycode) const

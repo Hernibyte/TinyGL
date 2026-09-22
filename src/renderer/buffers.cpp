@@ -149,7 +149,7 @@ namespace TGL::GFX
         return nullptr;
     }
     
-    index_buffer* index_buffer::create(const u32* indices, const u32 count)
+    index_buffer* index_buffer::create(const u32* indices, const i32 count)
     {
         switch (renderer::get_api())
         {

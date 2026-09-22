@@ -10,7 +10,7 @@ namespace TGL::GFX
     class render_object
     {
     public:
-        render_object(vertex_buffer::vertex_buffer_info vertex_buffer_info, index_buffer::index_buffer_info index_buffer_info);
+        render_object(vertex_buffer::vertex_buffer_info vertex_buffer_info, GFX::vertex_attributes_layout vertex_attributes_layout, index_buffer::index_buffer_info index_buffer_info);
         ~render_object();
         
         buffer_id get_buffer_id() const
@@ -21,6 +21,8 @@ namespace TGL::GFX
             TGL_CORE_ERROR("VERTEX ARRAY IS NULL");
             return -1;
         }
+        
+        i32 get_index_count() const  { return m_index_buffer->get_count(); }
         
         void bind() const;
         void unbind() const;

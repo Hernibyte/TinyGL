@@ -3,7 +3,7 @@
 namespace TGL::GFX
 {
     
-    render_object::render_object(const vertex_buffer::vertex_buffer_info vertex_buffer_info, const index_buffer::index_buffer_info index_buffer_info)
+    render_object::render_object(const vertex_buffer::vertex_buffer_info vertex_buffer_info, GFX::vertex_attributes_layout vertex_attributes_layout, const index_buffer::index_buffer_info index_buffer_info)
     {
         m_vertex_array = vertex_array::create();
         m_vertex_array->bind();
@@ -12,7 +12,9 @@ namespace TGL::GFX
         
         m_index_buffer = index_buffer::create(index_buffer_info);
         
-        //m_vertex_array->unbind();
+        vertex_attributes_layout.set_attribute_layout();
+        
+        m_vertex_array->unbind();
     }
     
     render_object::~render_object()

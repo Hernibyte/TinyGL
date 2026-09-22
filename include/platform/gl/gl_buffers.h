@@ -29,7 +29,7 @@ namespace TGL::GL
     class gl_index_buffer : public GFX::index_buffer
     {
     public:
-        gl_index_buffer(const u32* indices, const u32 count);
+        gl_index_buffer(const u32* indices, const i32 count);
         virtual ~gl_index_buffer() override;
         
         virtual u32 get_count() override { return m_count; };

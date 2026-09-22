@@ -113,13 +113,13 @@ namespace TGL::GFX
         struct index_buffer_info
         {
             u32* indices;
-            u32 count;
+            i32 count;
         };
         
         virtual ~index_buffer() {}
         
         static index_buffer* create(const index_buffer_info& info);
-        static index_buffer* create(const u32* indices, u32 count);
+        static index_buffer* create(const u32* indices, i32 count);
         
         buffer_id get_id() const { return m_buffer_id; }
         virtual u32 get_count() = 0;

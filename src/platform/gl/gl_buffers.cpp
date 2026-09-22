@@ -36,7 +36,7 @@ namespace TGL::GL
     // INDEX BUFFER /////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////
     
-    gl_index_buffer::gl_index_buffer(const u32* indices, const u32 count)
+    gl_index_buffer::gl_index_buffer(const u32* indices, const i32 count)
     {
         m_count = count;
         
