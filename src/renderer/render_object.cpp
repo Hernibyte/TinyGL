@@ -19,12 +19,7 @@ namespace TGL::GFX
     
     render_object::~render_object()
     {
-        if (m_vertex_array)
-            delete m_vertex_array;
-        if (m_vertex_buffer)
-            delete m_vertex_buffer;
-        if (m_index_buffer)
-            delete m_index_buffer;
+        
     }
 
     void render_object::bind() const

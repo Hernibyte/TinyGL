@@ -28,9 +28,9 @@ namespace TGL::GFX
         void unbind() const;
         
     private:
-        vertex_array* m_vertex_array = nullptr;
-        vertex_buffer* m_vertex_buffer = nullptr;
-        index_buffer* m_index_buffer = nullptr;
+        std::unique_ptr<vertex_array> m_vertex_array = nullptr;
+        std::unique_ptr<vertex_buffer> m_vertex_buffer = nullptr;
+        std::unique_ptr<index_buffer> m_index_buffer = nullptr;
         
     };
     

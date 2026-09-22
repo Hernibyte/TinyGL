@@ -7,7 +7,7 @@
 
 namespace TGL::GFX
 {
-    vertex_array* vertex_array::create()
+    std::unique_ptr<vertex_array> vertex_array::create()
     {
         switch (renderer::get_api())
         {
@@ -17,7 +17,7 @@ namespace TGL::GFX
         
         case GFX::gfx_api::opengl:
             //
-            return new GL::gl_vertex_array();
+            return std::make_unique<GL::gl_vertex_array>();
             break;
         
         default:

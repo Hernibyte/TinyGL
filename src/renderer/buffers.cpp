@@ -83,28 +83,12 @@ namespace TGL::GFX
     // VERTEX BUFFER ////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////
 
-    vertex_buffer* vertex_buffer::create(const vertex_buffer_info& info)
+    std::unique_ptr<vertex_buffer> vertex_buffer::create(const vertex_buffer_info& info)
     {
-        switch (renderer::get_api())
-        {
-        case GFX::gfx_api::none:
-            TGL_ASSERT_LOG(false, "RENDER BUFFER: [NONE] Platform not supported!");
-            break;
-        
-        case GFX::gfx_api::opengl:
-            //
-            return new GL::gl_vertex_buffer(info.vertices, info.size);
-            break;
-        
-        default:
-            TGL_ASSERT_LOG(false, "RENDER BUFFER: Platform not supported!");
-            break;
-        }
-            
-        return nullptr;
+        return create(info.vertices, info.size);
     }
     
-    vertex_buffer* vertex_buffer::create(const f32* vertices, const u32 size)
+    std::unique_ptr<vertex_buffer> vertex_buffer::create(const f32* vertices, const u32 size)
     {
         switch (renderer::get_api())
         {
@@ -114,7 +98,7 @@ namespace TGL::GFX
         
         case GFX::gfx_api::opengl:
             //
-            return new GL::gl_vertex_buffer(vertices, size);
+            return std::make_unique<GL::gl_vertex_buffer>(vertices, size);
             break;
         
         default:
@@ -129,28 +113,12 @@ namespace TGL::GFX
     // INDEX BUFFER /////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////
     
-    index_buffer* index_buffer::create(const index_buffer_info& info)
+    std::unique_ptr<index_buffer> index_buffer::create(const index_buffer_info& info)
     {
-        switch (renderer::get_api())
-        {
-        case GFX::gfx_api::none:
-            TGL_ASSERT_LOG(false, "RENDER BUFFER: [NONE] Platform not supported!");
-            break;
-        
-        case GFX::gfx_api::opengl:
-            //
-            return new GL::gl_index_buffer(info.indices, info.count);
-            break;
-        
-        default:
-            TGL_ASSERT_LOG(false, "RENDER BUFFER: Platform not supported!");
-            break;
-        }
-            
-        return nullptr;
+        return create(info.indices, info.count);
     }
     
-    index_buffer* index_buffer::create(const u32* indices, const i32 count)
+    std::unique_ptr<index_buffer> index_buffer::create(const u32* indices, const i32 count)
     {
         switch (renderer::get_api())
         {
@@ -160,7 +128,7 @@ namespace TGL::GFX
         
         case GFX::gfx_api::opengl:
             //
-            return new GL::gl_index_buffer(indices, count);
+            return std::make_unique<GL::gl_index_buffer>(indices, count);
             break;
         
         default:

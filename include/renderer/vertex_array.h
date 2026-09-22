@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "platform/default_types.h"
 
 namespace TGL::GFX
@@ -11,7 +13,7 @@ namespace TGL::GFX
         vertex_array() = default;
         virtual ~vertex_array() = default;
         
-        static vertex_array* create();
+        static std::unique_ptr<vertex_array> create();
         
         virtual void bind() = 0;
         virtual void unbind() = 0;
