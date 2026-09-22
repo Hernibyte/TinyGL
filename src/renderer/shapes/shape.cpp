@@ -8,14 +8,13 @@ namespace TGL::SHAPE
         m_shader_program = shader_program;
         
         float vertices[3 * 3] = {
-            0.5f, 0.5f, 0.0f,
-            0.5f, -0.5f, 0.0f,
-            -0.5f,  -0.5f, 0.0f
-        };
+            -0.5f, -0.5f, 0.0f,
+             0.5f, -0.5f, 0.0f,
+             0.0f,  0.5f, 0.0f
+        };  
     
-        u32 indices[3 * 2] = {
-            0, 1, 3,
-            1, 2, 3
+        u32 indices[3] = {
+            0, 1, 2
         };
     
         TGL::GFX::vertex_buffer::vertex_buffer_info vertex_buffer_info = { vertices, sizeof(vertices) };
