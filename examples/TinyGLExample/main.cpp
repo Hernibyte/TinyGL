@@ -41,21 +41,19 @@ void on_event(TGL::event& e)
 
 int main()
 {
-    TGL::CORE::window_info info = {
-        800, 
-        600, 
-        "TinyGL Example"
-    };
-    TGL::CORE::window window(info);
-    window.set_on_event_callback(on_event);
+    TGL::CORE::application app{800, 600, "TinyGL Example"};
+    app.get_window()->set_on_event_callback(on_event);
     
-    while (!window.should_close())
+    while (!app.get_window()->should_close())
     {
         // Render your scene here
-        window.render_something();
+        app.get_renderer()->clear_color(0.2f, 0.3f, 0.3f, 1.0f);
+        app.get_renderer()->clear(TGL_COLOR_BUFFER_BIT);
+        app.draw_square(1.0f, 1.0f, 1.0f);
+        //app.draw_square(-1.0f, -1.0f, -1.0f);
         
-        window.swap_buffers();
-        window.poll_events();
+        app.get_window()->swap_buffers();
+        app.get_window()->poll_events();
     }
 
     return 0;

@@ -19,11 +19,11 @@ namespace TGL::GFX
         context::init(window_process_address_ptr);
     }
 
-    void renderer::draw(const GFX::render_object& render_object, const GFX::shader_program& shader_program)
+    void renderer::draw(buffer_id vertex_array_id, i32 index_count, shader_id shader_program_id)
     {
-        glUseProgram(shader_program.get_shader_program_id());
-        glBindVertexArray(render_object.get_buffer_id());
-        glDrawElements(GL_TRIANGLES, render_object.get_index_count(), GL_UNSIGNED_INT, nullptr);
+        glUseProgram(shader_program_id);
+        glBindVertexArray(vertex_array_id);
+        glDrawElements(GL_TRIANGLES, index_count, GL_UNSIGNED_INT, nullptr);
     }
 
     void renderer::clear_color(const f32 red, const f32 green, const f32 blue, const f32 alpha) const

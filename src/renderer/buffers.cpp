@@ -8,6 +8,7 @@
 
 namespace TGL::GFX
 {
+    
     u32 shader_data_type_size(const shader_data_type type)
     {
         switch (type)

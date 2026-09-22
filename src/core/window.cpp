@@ -68,9 +68,6 @@ namespace TGL::CORE
         
         glfwMakeContextCurrent(m_window_props.window);
         glfwSetWindowUserPointer(m_window_props.window, &m_window_props);
-
-        // create renderer
-        m_window_props.renderer = std::make_shared<GFX::renderer>(glfwGetProcAddress);
         
         // glfw callbacks
         glfwSetWindowSizeCallback(m_window_props.window, [](GLFWwindow* window, i32 width, i32 height)
@@ -203,57 +200,9 @@ namespace TGL::CORE
         glfwPollEvents();
     }
 
-    void window::render_something()
+    void* window::get_proccess_address() const
     {
-        std::string vertex_shader_source = R"(
-            #version 330 core
-
-            layout (location = 0) in vec3 a_Position;
-            
-            void main()
-            {
-                gl_Position = vec4(a_Position, 1.0);
-            }
-        )";
-        
-        std::string fragment_shader_source = R"(
-            #version 330 core
-
-            out vec4 out_Color;
-            
-            void main()
-            {
-                out_Color = vec4(0.8, 0.2, 0.3, 1.0);
-            }
-        )";
-        
-        GFX::shader_program m_shader_program{vertex_shader_source.c_str(), fragment_shader_source.c_str()};
-        
-        float vertices[4 * 3] = {
-            0.5f, 0.5f, 0.0f,
-            0.5f, -0.5f, 0.0f,
-            -0.5f,  -0.5f, 0.0f,
-            -0.5f, 0.5f, 0.0f
-        };
-        
-        u32 indices[3 * 2] = {
-            0, 1, 3,
-            1, 2, 3
-        };
-        
-        GFX::vertex_buffer::vertex_buffer_info vertex_buffer_info = { vertices, sizeof(vertices) };
-        GFX::index_buffer::index_buffer_info index_buffer_info = { indices, sizeof(indices) };
-        
-        GFX::vertex_attributes_layout vertex_attributes_layout = {
-            { GFX::shader_data_type::float_3, "a_Position" }
-        };
-        
-        GFX::render_object m_render_object(vertex_buffer_info, vertex_attributes_layout, index_buffer_info);
-        
-        m_window_props.renderer->clear_color(0.2f, 0.3f, 0.3f, 1.0f);
-        m_window_props.renderer->clear(GL_COLOR_BUFFER_BIT);
-        
-        m_window_props.renderer->draw(m_render_object, m_shader_program);
+        return glfwGetProcAddress;
     }
 
     bool window::get_key_pressed(i32 keycode) const

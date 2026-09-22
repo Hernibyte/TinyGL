@@ -24,7 +24,7 @@ namespace TGL::CORE
     class window
     {
     public:
-        window(i32 width, i32 height, const char* title);
+        window(i32 width, i32 height, cstr_ptr title);
         explicit window(window_info& info);
         ~window();
         
@@ -32,13 +32,11 @@ namespace TGL::CORE
         
         void close();
         bool should_close();
-
-        inline std::shared_ptr<GFX::renderer>& get_renderer() { return m_window_props.renderer; }
-
+        
         void swap_buffers() const;
         void poll_events() const;
         
-        void render_something();
+        void* get_proccess_address() const;
 
         bool get_key_pressed(i32 keycode) const;
         bool get_key_released(i32 keycode) const;
@@ -58,7 +56,6 @@ namespace TGL::CORE
             i32 framebuffer_height;
             const char* title;
             event::callback_fn on_event;
-            std::shared_ptr<GFX::renderer> renderer = nullptr;
         };
         window_props m_window_props;
 

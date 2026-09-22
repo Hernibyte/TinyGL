@@ -79,6 +79,7 @@ target_sources(TinyGL
         FILE_SET HEADERS
         BASE_DIRS ./include
         FILES
+            include/core/application.h
             include/core/core.h
             include/core/window.h
             include/events/event.h
@@ -94,6 +95,7 @@ target_sources(TinyGL
             include/platform/assert.h
             include/platform/default_types.h
             include/platform/log.h
+            include/renderer/shapes/shape.h
             include/renderer/buffers.h
             include/renderer/context.h
             include/renderer/render_object.h
@@ -102,12 +104,14 @@ target_sources(TinyGL
             include/renderer/vertex_array.h
             include/TinyGL.h
     PRIVATE
+        src/core/application.cpp
         src/core/window.cpp
         src/platform/gl/gl_buffers.cpp
         src/platform/gl/gl_context.cpp
         src/platform/gl/gl_shader.cpp
         src/platform/gl/gl_vertex_array.cpp
         src/platform/log.cpp
+        src/renderer/shapes/shape.cpp
         src/renderer/buffers.cpp
         src/renderer/context.cpp
         src/renderer/render_object.cpp

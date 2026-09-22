@@ -23,7 +23,7 @@ namespace TGL::GFX
         renderer() = delete;
         renderer(void* window_process_address_ptr);
         
-        void draw(const GFX::render_object& render_object, const GFX::shader_program& shader_program);
+        void draw(buffer_id vertex_array_id, i32 index_count, shader_id shader_program_id);
         
         void clear_color(const  f32 red, const f32 green, const f32 blue, const f32 alpha) const;
         void clear(const  i32 mask) const;

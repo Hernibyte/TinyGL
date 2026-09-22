@@ -6,3 +6,4 @@
 #include "input_code/keyboard.h"
 #include "input_code/mouse.h"
 #include "core/window.h"
+#include "core/application.h"
