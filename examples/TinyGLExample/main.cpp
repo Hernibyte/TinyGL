@@ -1,42 +1,62 @@
 #include "TinyGL.h"
 
-void on_event(TGL::event& e)
+namespace
 {
-    if (e.get_event_type() == TGL::event_type::window_resize)
+    bool on_window_resize(const TGL::window_resize_event& resize_event)
     {
-        TGL::window_resize_event& resize_event = dynamic_cast<TGL::window_resize_event&>(e);
         TGL_INFO("Window resized to: x={0}, y={1}", resize_event.get_width(), resize_event.get_height());
+        return true;
     }
-    else if (e.get_event_type() == TGL::event_type::key_pressed)
+    
+    bool on_key_pressed(const TGL::key_pressed_event& key_event)
     {
-        TGL::key_pressed_event& key_event = dynamic_cast<TGL::key_pressed_event&>(e);
         TGL_INFO("Key pressed: {0}", key_event.get_keycode());
+        return true;
     }
-    else if (e.get_event_type() == TGL::event_type::mouse_moved)
+    
+    bool on_mouse_moved(const TGL::mouse_moved_event& mouse_event)
     {
-        TGL::mouse_moved_event& mouse_event = dynamic_cast<TGL::mouse_moved_event&>(e);
         TGL_INFO("Mouse move to: x={0}, y={1}", mouse_event.get_x(), mouse_event.get_y());
+        return true;
     }
-    else if (e.get_event_type() == TGL::event_type::mouse_scrolled)
+    
+    bool on_mouse_scrolled(const TGL::mouse_scrolled_event& scroll_event)
     {
-        TGL::mouse_scrolled_event& scroll_event = dynamic_cast<TGL::mouse_scrolled_event&>(e);
         TGL_INFO("Mouse scrolled by: x={0}, y={1}", scroll_event.get_x_offset(), scroll_event.get_y_offset());
+        return true;
     }
-    else if (e.get_event_type() == TGL::event_type::mouse_button_pressed)
+    
+    bool on_mouse_button_pressed(const TGL::mouse_button_pressed_event& button_event)
     {
-        TGL::mouse_button_pressed_event& button_event = dynamic_cast<TGL::mouse_button_pressed_event&>(e);
         TGL_INFO("Mouse button pressed: {0}", button_event.get_mouse_button());
+        return true;
     }
-    else if (e.get_event_type() == TGL::event_type::mouse_button_released)
+    
+    bool on_mouse_button_released(const TGL::mouse_button_released_event& button_event)
     {
-        TGL::mouse_button_released_event& button_event = dynamic_cast<TGL::mouse_button_released_event&>(e);
         TGL_INFO("Mouse button released: {0}", button_event.get_mouse_button());
+        return true;
     }
-    else if (e.get_event_type() == TGL::event_type::window_framebuffer_resize)
+    
+    bool on_window_framebuffer_resize(const TGL::window_framebuffer_resize_event& framebuffer_event)
     {
-        TGL::window_framebuffer_resize_event& framebuffer_event = dynamic_cast<TGL::window_framebuffer_resize_event&>(e);
         TGL_INFO("Window framebuffer resized to: x={0}, y={1}", framebuffer_event.get_width(), framebuffer_event.get_height());
+        return true;
     }
+
+    void on_event(TGL::event& e)
+    {
+        TGL::event_handler handler(e);
+        
+        handler.dispatch<TGL::window_resize_event>(on_window_resize);
+        handler.dispatch<TGL::key_pressed_event>(on_key_pressed);
+        handler.dispatch<TGL::mouse_moved_event>(on_mouse_moved);
+        handler.dispatch<TGL::mouse_scrolled_event>(on_mouse_scrolled);
+        handler.dispatch<TGL::mouse_button_pressed_event>(on_mouse_button_pressed);
+        handler.dispatch<TGL::mouse_button_released_event>(on_mouse_button_released);
+        handler.dispatch<TGL::window_framebuffer_resize_event>(on_window_framebuffer_resize);
+    }
+    
 }
 
 int main()

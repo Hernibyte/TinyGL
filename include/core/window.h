@@ -36,7 +36,7 @@ namespace TGL::CORE
         void swap_buffers() const;
         void poll_events() const;
         
-        void* get_proccess_address() const;
+        void* get_process_address() const;
 
         bool get_key_pressed(i32 keycode) const;
         bool get_key_released(i32 keycode) const;

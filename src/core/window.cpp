@@ -200,7 +200,7 @@ namespace TGL::CORE
         glfwPollEvents();
     }
 
-    void* window::get_proccess_address() const
+    void* window::get_process_address() const
     {
         return glfwGetProcAddress;
     }

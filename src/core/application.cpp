@@ -12,7 +12,7 @@ namespace TGL::CORE
     application::application(i32 width, i32 height, cstr_ptr title)
     {
         m_window = std::make_shared<CORE::window>(width, height, title);
-        m_renderer = std::make_shared<GFX::renderer>(m_window->get_proccess_address());
+        m_renderer = std::make_shared<GFX::renderer>(m_window->get_process_address());
         
         std::string vertex_shader_source = R"(
             #version 330 core

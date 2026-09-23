@@ -47,6 +47,8 @@ namespace TGL
     class event
     {
     public:
+        virtual ~event() = default;
+        
         using callback_fn = std::function<void(event&)>;
 
         virtual event_type get_event_type() const = 0;
@@ -54,13 +56,39 @@ namespace TGL
         virtual i32 get_category_flags() const = 0;
         virtual std::string to_string() const { return get_name(); }
 
-        bool is_in_category(event_category category)
+        bool is_in_category(event_category category) const
         {
             return get_category_flags() & category;
         }
         
+        void set_handled(bool handled) { m_handled = handled; }
+        
     protected:
         bool m_handled = false;
+    };
+    
+    class event_handler
+    {
+    private:
+        template<typename T>
+        using event_fn = std::function<bool(T&)>;
+        
+    public:
+        explicit event_handler(event& in_event) : m_event(in_event) {}
+        
+        template<typename T>
+        bool dispatch(event_fn<T> function)
+        {
+            if (m_event.get_event_type() == T::get_static_type())
+            {
+                m_event.set_handled(function(*static_cast<T*>(&m_event)));
+                return true;
+            }
+            return false;
+        }
+        
+    private:
+        event& m_event;
     };
 
 }
