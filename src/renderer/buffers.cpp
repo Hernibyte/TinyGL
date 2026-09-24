@@ -55,29 +55,7 @@ namespace TGL::GFX
     
     vertex_attributes::vertex_attributes(const shader_data_type type, const std::string& name, const bool normalized)
         : m_name(name), m_type(type), m_normalized(normalized), m_size(shader_data_type_size(type)), m_offset(0) {}
-    
-    /////////////////////////////////////////////////////////////////
-    // VERTEX ATTRIBUTES ////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////
-    
-    void vertex_attributes_layout::set_attribute_layout() const
-    {
-        i32 index = 0;
-        for (auto& attribute : m_attributes)
-        {
-            glEnableVertexAttribArray(index);
-            glVertexAttribPointer(
-                index, 
-                attribute.get_attribute_count(), 
-                shader_data_type_to_glsl_type(attribute.m_type),
-                attribute.m_normalized, 
-                m_stride, 
-                reinterpret_cast<void*>(attribute.m_offset)
-            );
-            
-            index++;
-        }
-    }
+
     
     /////////////////////////////////////////////////////////////////
     // VERTEX BUFFER ////////////////////////////////////////////////
@@ -85,10 +63,10 @@ namespace TGL::GFX
 
     std::unique_ptr<vertex_buffer> vertex_buffer::create(const vertex_buffer_info& info)
     {
-        return create(info.vertices, info.size);
+        return create(info.vertices, info.size, info.layout);
     }
     
-    std::unique_ptr<vertex_buffer> vertex_buffer::create(const f32* vertices, const u32 size)
+    std::unique_ptr<vertex_buffer> vertex_buffer::create(const f32* vertices, const i32 size, const vertex_attributes_layout& attributes_layout)
     {
         switch (renderer::get_api())
         {
@@ -98,7 +76,7 @@ namespace TGL::GFX
         
         case GFX::gfx_api::opengl:
             //
-            return std::make_unique<GL::gl_vertex_buffer>(vertices, size);
+            return std::make_unique<GL::gl_vertex_buffer>(vertices, size, attributes_layout);
             break;
         
         default:
@@ -118,7 +96,7 @@ namespace TGL::GFX
         return create(info.indices, info.count);
     }
     
-    std::unique_ptr<index_buffer> index_buffer::create(const u32* indices, const i32 count)
+    std::unique_ptr<index_buffer> index_buffer::create(const i32* indices, const i32 count)
     {
         switch (renderer::get_api())
         {

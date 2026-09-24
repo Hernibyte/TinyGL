@@ -15,7 +15,6 @@ namespace TGL::GFX
     };
     
     static u32 shader_data_type_size(const shader_data_type type);
-    static u32 shader_data_type_to_glsl_type(const shader_data_type type);
     
     struct vertex_attributes
     {
@@ -58,7 +57,10 @@ namespace TGL::GFX
             calculate_offset_and_stride();
         }
         
-        void set_attribute_layout() const;
+        i32 get_stride() const { return m_stride; }
+        
+        std::vector<vertex_attributes>::iterator begin() { return m_attributes.begin(); }
+        std::vector<vertex_attributes>::iterator end() { return m_attributes.end(); }
         
     private:
         void calculate_offset_and_stride()
@@ -86,22 +88,24 @@ namespace TGL::GFX
         struct vertex_buffer_info
         {
             f32* vertices;
-            u32 size;
+            i32 size;
+            vertex_attributes_layout layout;
         };
         
         virtual ~vertex_buffer() {}
         
         static std::unique_ptr<vertex_buffer> create(const vertex_buffer_info& info);
-        static std::unique_ptr<vertex_buffer> create(const f32* vertices, u32 size);
+        static std::unique_ptr<vertex_buffer> create(const f32* vertices, i32 size, const vertex_attributes_layout& attributes_layout);
         
         buffer_id get_id() const { return m_buffer_id; }
-        virtual u32 get_size() = 0;
+        virtual i32 get_size() = 0;
         
         virtual void bind() = 0;
         virtual void unbind() = 0;
         
     protected:
         buffer_id m_buffer_id = 0;
+        vertex_attributes_layout m_attributes_layout {};
     };
     
     /////////////////////////////////////////////////////////////////
@@ -112,17 +116,17 @@ namespace TGL::GFX
     public:
         struct index_buffer_info
         {
-            u32* indices;
+            i32* indices;
             i32 count;
         };
         
         virtual ~index_buffer() {}
         
         static std::unique_ptr<index_buffer> create(const index_buffer_info& info);
-        static std::unique_ptr<index_buffer> create(const u32* indices, i32 count);
+        static std::unique_ptr<index_buffer> create(const i32* indices, i32 count);
         
         buffer_id get_id() const { return m_buffer_id; }
-        virtual u32 get_count() = 0;
+        virtual i32 get_count() = 0;
         
         virtual void bind() = 0;
         virtual void unbind() = 0;

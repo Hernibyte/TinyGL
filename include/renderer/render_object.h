@@ -10,7 +10,7 @@ namespace TGL::GFX
     class render_object
     {
     public:
-        render_object(vertex_buffer::vertex_buffer_info vertex_buffer_info, GFX::vertex_attributes_layout vertex_attributes_layout, index_buffer::index_buffer_info index_buffer_info);
+        render_object(const vertex_buffer::vertex_buffer_info& vertex_buffer_info, const index_buffer::index_buffer_info& index_buffer_info);
         ~render_object();
         
         buffer_id get_buffer_id() const

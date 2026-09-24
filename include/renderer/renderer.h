@@ -1,9 +1,6 @@
 #pragma once 
 
 #include "platform/default_types.h"
-#include "events/event.h"
-#include "renderer/shader.h"
-#include "renderer/render_object.h"
 
 #define TGL_COLOR_BUFFER_BIT 0x00004000
 #define TGL_DEPTH_BUFFER_BIT 0x00000100
