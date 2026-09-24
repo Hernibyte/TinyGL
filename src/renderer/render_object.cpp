@@ -3,21 +3,44 @@
 namespace TGL::GFX
 {
     
-    render_object::render_object(const vertex_buffer::vertex_buffer_info& vertex_buffer_info, const index_buffer::index_buffer_info& index_buffer_info)
+    render_object::render_object()
     {
         m_vertex_array = vertex_array::create();
         m_vertex_array->bind();
-        
-        m_vertex_buffer = vertex_buffer::create(vertex_buffer_info);
-        
-        m_index_buffer = index_buffer::create(index_buffer_info);
-        
         m_vertex_array->unbind();
     }
     
     render_object::~render_object()
     {
         
+    }
+
+    void render_object::add_vertex_buffer(const std::shared_ptr<vertex_buffer>& vertex_buffer)
+    {
+        bind();
+        m_vertex_buffers.push_back(vertex_buffer);
+        unbind();
+    }
+
+    void render_object::add_vertex_buffer(const vertex_buffer::vertex_buffer_info& vertex_buffer_info)
+    {
+        bind();
+        m_vertex_buffers.push_back(vertex_buffer::create(vertex_buffer_info));
+        unbind();
+    }
+
+    void render_object::set_index_buffer(const std::shared_ptr<index_buffer>& index_buffer)
+    {
+        bind();
+        m_index_buffer = index_buffer;
+        unbind();
+    }
+
+    void render_object::set_index_buffer(const index_buffer::index_buffer_info& index_buffer_info)
+    {
+        bind();
+        m_index_buffer = index_buffer::create(index_buffer_info);
+        unbind();
     }
 
     void render_object::bind() const

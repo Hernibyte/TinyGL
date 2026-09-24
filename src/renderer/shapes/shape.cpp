@@ -26,7 +26,9 @@ namespace TGL::SHAPE
             3 * sizeof(u32)
         };
         
-        m_render_object = std::make_shared<GFX::render_object>(vertex_buffer_info, index_buffer_info);
+        m_render_object = std::make_shared<GFX::render_object>();
+        m_render_object->add_vertex_buffer(vertex_buffer_info);
+        m_render_object->set_index_buffer(index_buffer_info);
     }
     
     square::square()
@@ -54,7 +56,9 @@ namespace TGL::SHAPE
             6 * sizeof(i32)
         };
         
-        m_render_object = std::make_shared<GFX::render_object>(vertex_buffer_info, index_buffer_info);
+        m_render_object = std::make_shared<GFX::render_object>();
+        m_render_object->add_vertex_buffer(vertex_buffer_info);
+        m_render_object->set_index_buffer(index_buffer_info);
     }
     
 }

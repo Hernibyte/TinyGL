@@ -61,12 +61,12 @@ namespace TGL::GFX
     // VERTEX BUFFER ////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////
 
-    std::unique_ptr<vertex_buffer> vertex_buffer::create(const vertex_buffer_info& info)
+    std::shared_ptr<vertex_buffer> vertex_buffer::create(const vertex_buffer_info& info)
     {
         return create(info.vertices, info.size, info.layout);
     }
     
-    std::unique_ptr<vertex_buffer> vertex_buffer::create(const f32* vertices, const i32 size, const vertex_attributes_layout& attributes_layout)
+    std::shared_ptr<vertex_buffer> vertex_buffer::create(const f32* vertices, const i32 size, const vertex_attributes_layout& attributes_layout)
     {
         switch (renderer::get_api())
         {
@@ -91,12 +91,12 @@ namespace TGL::GFX
     // INDEX BUFFER /////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////
     
-    std::unique_ptr<index_buffer> index_buffer::create(const index_buffer_info& info)
+    std::shared_ptr<index_buffer> index_buffer::create(const index_buffer_info& info)
     {
         return create(info.indices, info.count);
     }
     
-    std::unique_ptr<index_buffer> index_buffer::create(const i32* indices, const i32 count)
+    std::shared_ptr<index_buffer> index_buffer::create(const i32* indices, const i32 count)
     {
         switch (renderer::get_api())
         {

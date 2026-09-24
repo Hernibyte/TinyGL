@@ -94,8 +94,8 @@ namespace TGL::GFX
         
         virtual ~vertex_buffer() {}
         
-        static std::unique_ptr<vertex_buffer> create(const vertex_buffer_info& info);
-        static std::unique_ptr<vertex_buffer> create(const f32* vertices, i32 size, const vertex_attributes_layout& attributes_layout);
+        static std::shared_ptr<vertex_buffer> create(const vertex_buffer_info& info);
+        static std::shared_ptr<vertex_buffer> create(const f32* vertices, i32 size, const vertex_attributes_layout& attributes_layout);
         
         buffer_id get_id() const { return m_buffer_id; }
         virtual i32 get_size() = 0;
@@ -122,8 +122,8 @@ namespace TGL::GFX
         
         virtual ~index_buffer() {}
         
-        static std::unique_ptr<index_buffer> create(const index_buffer_info& info);
-        static std::unique_ptr<index_buffer> create(const i32* indices, i32 count);
+        static std::shared_ptr<index_buffer> create(const index_buffer_info& info);
+        static std::shared_ptr<index_buffer> create(const i32* indices, i32 count);
         
         buffer_id get_id() const { return m_buffer_id; }
         virtual i32 get_count() = 0;
