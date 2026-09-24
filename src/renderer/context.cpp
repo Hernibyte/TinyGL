@@ -8,13 +8,13 @@ namespace TGL::GFX
 {
     void context::init(void* process_address_ptr)
     {
-        switch (renderer::get_api())
+        switch (renderer_api::get_api())
         {
-        case GFX::gfx_api::none:
+        case GFX::renderer_api::gfx_api::none:
             TGL_ASSERT_LOG(false, "RENDER CONTEXT: [NONE] Platform not supported!");
         break;
         
-        case GFX::gfx_api::opengl:
+        case GFX::renderer_api::gfx_api::opengl:
             GL::gl_context::init(process_address_ptr);
         break;
         

@@ -1,13 +1,18 @@
-﻿#include "renderer/vertex_array.h"
+﻿#include "renderer/renderer_api.h"
 
 #include "platform/assert.h"
-#include "renderer/renderer_api.h"
-
-#include "platform/gl/gl_vertex_array.h"
+#include "platform/gl/gl_renderer_api.h"
 
 namespace TGL::GFX
 {
-    std::unique_ptr<vertex_array> vertex_array::create()
+    renderer_api::gfx_api renderer_api::s_gfx_api = gfx_api::opengl;
+
+    renderer_api::~renderer_api()
+    {
+        
+    }
+
+    std::unique_ptr<renderer_api> renderer_api::create()
     {
         switch (renderer_api::get_api())
         {
@@ -17,7 +22,7 @@ namespace TGL::GFX
         
         case GFX::renderer_api::gfx_api::opengl:
             //
-            return std::make_unique<GL::gl_vertex_array>();
+            return std::make_unique<GL::gl_renderer_api>();
             break;
         
         default:

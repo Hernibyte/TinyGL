@@ -3,7 +3,7 @@
 #include "glad/gl.h"
 
 #include "platform/assert.h"
-#include "renderer/renderer.h"
+#include "renderer/renderer_api.h"
 #include "platform/gl/gl_buffers.h"
 
 namespace TGL::GFX
@@ -68,15 +68,15 @@ namespace TGL::GFX
     
     std::shared_ptr<vertex_buffer> vertex_buffer::create(const f32* vertices, const i32 size, const vertex_attributes_layout& attributes_layout)
     {
-        switch (renderer::get_api())
+        switch (renderer_api::get_api())
         {
-        case GFX::gfx_api::none:
+        case GFX::renderer_api::gfx_api::none:
             TGL_ASSERT_LOG(false, "RENDER BUFFER: [NONE] Platform not supported!");
             break;
         
-        case GFX::gfx_api::opengl:
+        case GFX::renderer_api::gfx_api::opengl:
             //
-            return std::make_unique<GL::gl_vertex_buffer>(vertices, size, attributes_layout);
+            return std::make_shared<GL::gl_vertex_buffer>(vertices, size, attributes_layout);
             break;
         
         default:
@@ -98,15 +98,15 @@ namespace TGL::GFX
     
     std::shared_ptr<index_buffer> index_buffer::create(const i32* indices, const i32 count)
     {
-        switch (renderer::get_api())
+        switch (renderer_api::get_api())
         {
-        case GFX::gfx_api::none:
+        case GFX::renderer_api::gfx_api::none:
             TGL_ASSERT_LOG(false, "RENDER BUFFER: [NONE] Platform not supported!");
             break;
         
-        case GFX::gfx_api::opengl:
+        case GFX::renderer_api::gfx_api::opengl:
             //
-            return std::make_unique<GL::gl_index_buffer>(indices, count);
+            return std::make_shared<GL::gl_index_buffer>(indices, count);
             break;
         
         default:

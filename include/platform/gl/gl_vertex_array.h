@@ -1,7 +1,6 @@
 ﻿#pragma once 
 
 #include "renderer/vertex_array.h"
-#include "platform/default_types.h"
 
 namespace TGL::GL
 {

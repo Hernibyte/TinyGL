@@ -1,19 +1,11 @@
 #pragma once 
 
 #include "platform/default_types.h"
-
-#define TGL_COLOR_BUFFER_BIT 0x00004000
-#define TGL_DEPTH_BUFFER_BIT 0x00000100
-#define TGL_STENCIL_BUFFER_BIT 0x00000400
+#include "renderer/renderer_api.h"
 
 namespace TGL::GFX
 {
-    enum class gfx_api
-    {
-        none = 0,
-        opengl = 1
-    };
-
+    
     class renderer
     {
     public:
@@ -24,12 +16,9 @@ namespace TGL::GFX
         
         void clear_color(const  f32 red, const f32 green, const f32 blue, const f32 alpha) const;
         void clear(const  i32 mask) const;
-
-        static gfx_api get_api() { return s_gfx_api; }
         
     private:
-        static gfx_api s_gfx_api;
-        
+        std::unique_ptr<renderer_api> m_renderer_api;
     };
 
 }

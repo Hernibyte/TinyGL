@@ -1,39 +1,29 @@
 #include "renderer/renderer.h"
 
-extern "C" 
-{
-    #include "glad/gl.h"
-}
-
-#include "platform/log.h"
-
 #include "renderer/context.h"
 
 namespace TGL::GFX
 {
 
-    gfx_api renderer::s_gfx_api = gfx_api::opengl;
-
     renderer::renderer(void* window_process_address_ptr)
     {
-        context::init(window_process_address_ptr);
+        m_renderer_api = renderer_api::create();
+        m_renderer_api->init(window_process_address_ptr);
     }
 
     void renderer::draw(buffer_id vertex_array_id, i32 index_count, shader_id shader_program_id)
     {
-        glUseProgram(shader_program_id);
-        glBindVertexArray(vertex_array_id);
-        glDrawElements(GL_TRIANGLES, index_count, GL_UNSIGNED_INT, nullptr);
+        m_renderer_api->draw_indexed(vertex_array_id, index_count, shader_program_id);
     }
 
     void renderer::clear_color(const f32 red, const f32 green, const f32 blue, const f32 alpha) const
     {
-        glClearColor(red, green, blue, alpha);
+        m_renderer_api->clear_color(red, green, blue, alpha);
     }
 
     void renderer::clear(const i32 mask) const
     {
-        glClear(mask);
+        m_renderer_api->clear(mask);
     }
     
 }

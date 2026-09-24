@@ -90,6 +90,7 @@ target_sources(TinyGL
             include/input_code/keyboard.h
             include/platform/gl/gl_buffers.h
             include/platform/gl/gl_context.h
+            include/platform/gl/gl_renderer_api.h
             include/platform/gl/gl_shader.h
             include/platform/gl/gl_vertex_array.h
             include/platform/assert.h
@@ -100,6 +101,7 @@ target_sources(TinyGL
             include/renderer/context.h
             include/renderer/render_object.h
             include/renderer/renderer.h
+            include/renderer/renderer_api.h
             include/renderer/shader.h
             include/renderer/vertex_array.h
             include/TinyGL.h
@@ -108,6 +110,7 @@ target_sources(TinyGL
         src/core/window.cpp
         src/platform/gl/gl_buffers.cpp
         src/platform/gl/gl_context.cpp
+        src/platform/gl/gl_renderer_api.cpp
         src/platform/gl/gl_shader.cpp
         src/platform/gl/gl_vertex_array.cpp
         src/platform/log.cpp
@@ -116,6 +119,7 @@ target_sources(TinyGL
         src/renderer/context.cpp
         src/renderer/render_object.cpp
         src/renderer/renderer.cpp
+        src/renderer/renderer_api.cpp
         src/renderer/shader.cpp
         src/renderer/vertex_array.cpp
 )
