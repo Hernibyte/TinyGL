@@ -79,7 +79,7 @@ target_sources(TinyGL
         FILE_SET HEADERS
         BASE_DIRS ./include
         FILES
-            include/core/application.h
+            include/core/render_window.h
             include/core/core.h
             include/core/window.h
             include/events/event.h
@@ -106,7 +106,7 @@ target_sources(TinyGL
             include/renderer/vertex_array.h
             include/TinyGL.h
     PRIVATE
-        src/core/application.cpp
+        src/core/render_window.cpp
         src/core/window.cpp
         src/platform/gl/gl_buffers.cpp
         src/platform/gl/gl_context.cpp

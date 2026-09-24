@@ -3,7 +3,7 @@
 namespace TGL::CORE
 {
     
-    application::application(i32 width, i32 height, cstr_ptr title)
+    render_window::render_window(i32 width, i32 height, cstr_ptr title)
     {
         m_window = std::make_shared<CORE::window>(width, height, title);
         m_renderer = std::make_shared<GFX::renderer>(m_window->get_process_address());
@@ -39,12 +39,12 @@ namespace TGL::CORE
         square_shape->set_shader_program_id(m_default_shader_program->get_shader_program_id());
     }
 
-    application::~application()
+    render_window::~render_window()
     {
         
     }
 
-    void application::draw_triangle(f32 x, f32 y, f32 z) const
+    void render_window::draw_triangle(f32 x, f32 y, f32 z) const
     {
         m_renderer->draw(
             triangle_shape->get_render_object()->get_buffer_id(), 
@@ -53,7 +53,7 @@ namespace TGL::CORE
         );
     }
 
-    void application::draw_square(f32 x, f32 y, f32 z) const
+    void render_window::draw_square(f32 x, f32 y, f32 z) const
     {
         m_renderer->draw(
             square_shape->get_render_object()->get_buffer_id(), 

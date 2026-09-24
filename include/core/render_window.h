@@ -8,11 +8,11 @@
 namespace TGL::CORE
 {
     
-    class application
+    class render_window
     {
     public:
-        application(i32 width, i32 height, cstr_ptr title);
-        ~application();
+        render_window(i32 width, i32 height, cstr_ptr title);
+        ~render_window();
         
         void draw_triangle(f32 x, f32 y, f32 z) const;
         void draw_square(f32 x, f32 y, f32 z) const;

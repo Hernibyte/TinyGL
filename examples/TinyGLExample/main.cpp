@@ -61,7 +61,7 @@ namespace
 
 int main()
 {
-    TGL::CORE::application app{800, 600, "TinyGL Example"};
+    TGL::CORE::render_window app{800, 600, "TinyGL Example"};
     app.get_window()->set_on_event_callback(on_event);
     
     while (!app.get_window()->should_close())
