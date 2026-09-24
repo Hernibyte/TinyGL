@@ -3,9 +3,9 @@
 namespace TGL::SHAPE
 {
     
-    triangle::triangle(const std::shared_ptr<GFX::shader_program>& shader_program)
+    triangle::triangle(const shader_id shader_program_id)
     {
-        m_shader_program = shader_program;
+        m_shader_program_id = shader_program_id;
         
         float vertices[3 * 3] = {
             -0.5f, -0.5f, 0.0f,
@@ -31,9 +31,9 @@ namespace TGL::SHAPE
         m_render_object = std::make_shared<GFX::render_object>(vertex_buffer_info, index_buffer_info);
     }
 
-    square::square(const std::shared_ptr<GFX::shader_program>& shader_program)
+    square::square(const shader_id shader_program_id)
     {
-        m_shader_program = shader_program;
+        m_shader_program_id = shader_program_id;
         
         float vertices[4 * 3] = {
             0.5f, 0.5f, 0.0f,
